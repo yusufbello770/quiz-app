@@ -1,1 +1,1 @@
-# quiz-app
+islamic Quiz App
