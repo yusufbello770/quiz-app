@@ -1,24 +1,24 @@
 // creating an array and passing the number, questions, options, and answers
 let questions = [{
         numb: 1,
-        question: "What does HTML stand for?",
-        answer: "Hyper Text Markup Language",
+        question: "All are kind of prayer in islam except?",
+        answer: "Solawat",
         options: [
-            "Hyper Text Preprocessor",
-            "Hyper Text Markup Language",
-            "Hyper Text Multiple Language",
-            "Hyper Tool Multi Language"
+            "Dhikr",
+            "Solat",
+            "Solawat",
+            "Du'a"
         ]
     },
     {
         numb: 2,
-        question: "What does CSS stand for?",
-        answer: "Cascading Style Sheet",
+        question: "Which of the following verse combination talk about war or fight?",
+        answer: "Q 2:190  Q 22:39",
         options: [
-            "Common Style Sheet",
-            "Colorful Style Sheet",
-            "Computer Style Sheet",
-            "Cascading Style Sheet"
+           "Q 2:197  Q 22:29",
+            "Q 2:190  Q 22:39",
+            "Q 2:140  Q 23:39",
+           "Q 1:190  Q 22:39"
         ]
     },
     {
