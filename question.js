@@ -23,35 +23,35 @@ let questions = [{
     },
     {
         numb: 3,
-        question: "What does PHP stand for?",
-        answer: "Hypertext Preprocessor",
+        question: "What was the nickname given to the prophet?",
+        answer: "Al Ameen",
         options: [
-            "Hypertext Preprocessor",
-            "Hypertext Programming",
-            "Hypertext Preprogramming",
-            "Hometext Preprocessor"
+            "Al Muheez",
+            "As Salam",
+            "Al Ameen",
+            "Al Amin"
         ]
     },
     {
         numb: 4,
-        question: "What does SQL stand for?",
-        answer: "Structured Query Language",
+        question: "Prophet Muhammad had how many offspring?",
+        answer: "7",
         options: [
-            "Stylish Question Language",
-            "Stylesheet Query Language",
-            "Statement Question Language",
-            "Structured Query Language"
+            "6",
+            "8",
+            "7",
+            "5"
         ]
     },
     {
         numb: 5,
-        question: "What does XML stand for?",
-        answer: "eXtensible Markup Language",
+        question: "Prophet Muhammad belong to which family?",
+        answer: "Quraiysh",
         options: [
-            "eXtensible Markup Language",
-            "eXecutable Multiple Language",
-            "eXTra Multi-Program Language",
-            "eXamine Multiple Language"
+            "Quraiysh",
+            "Qudusiy",
+            "yusufiy",
+            "Ismaheeliy"
         ]
     },
     // you can uncomment the below codes and make duplicate as more as you want to add question
