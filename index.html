@@ -1019,10 +1019,10 @@
             
             // Shuffle and select 10 questions
             const shuffled = [...filteredQuestions].sort(() => 0.5 - Math.random());
-            currentExam.questions = shuffled.slice(0, 10);
+            currentExam.questions = shuffled.slice(0, 15);
             
             // Initialize answers array
-            currentExam.answers = new Array(10).fill(null);
+            currentExam.answers = new Array(15).fill(null);
             
             instructionsScreen.classList.add('hidden');
             examScreen.classList.remove('hidden');
@@ -1114,7 +1114,7 @@
 
         function updateProgressBar() {
             const answeredCount = currentExam.answers.filter(a => a !== null).length;
-            const progress = (answeredCount / 10) * 100;
+            const progress = (answeredCount / 15) * 100;
             progressBar.style.width = `${progress}%`;
         }
 
@@ -1138,13 +1138,13 @@
             resultsScreen.classList.remove('hidden');
             
             scoreDisplay.textContent = score;
-            scoreText.textContent = `${score} out of 10`;
+            scoreText.textContent = `${score} out of 15`;
             
             // Set result message
-            if (score >= 8) {
+            if (score >= 12) {
                 resultMessage.textContent = "Excellent! You have a strong understanding of the material.";
                 resultMessage.style.color = "#2ecc71";
-            } else if (score >= 6) {
+            } else if (score >= 9) {
                 resultMessage.textContent = "Good job! You have a decent understanding of the material.";
                 resultMessage.style.color = "#3498db";
             } else {
@@ -1164,7 +1164,7 @@
                 studentClass: currentExam.studentClass,
                 examCategory: currentExam.category,
                 score: score,
-                percentage: (score / 10) * 100,
+                percentage: (score / 15) * 100,
                 timestamp: new Date().toLocaleString(),
                 date: new Date().toISOString().split('T')[0]
             };
@@ -1224,7 +1224,7 @@
         function downloadCertificate() {
             // Create a simple certificate
             const score = parseInt(scoreDisplay.textContent);
-            const percentage = (score / 10) * 100;
+            const percentage = (score / 15) * 100;
             
             const certificate = `
                 <!DOCTYPE html>
