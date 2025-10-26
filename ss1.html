@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT: Software & OS Functions Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .quiz-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 900px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .timer-container {
+            background: #1a2a6c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+        }
+        
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-counter {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #1a2a6c;
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background-color: #e3f2fd;
+            border-color: #1a2a6c;
+        }
+        
+        .option.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+        
+        .option.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-prev {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-next {
+            background-color: #1a2a6c;
+            color: white;
+        }
+        
+        .btn-submit {
+            background-color: #b21f1f;
+            color: white;
+        }
+        
+        .btn-restart {
+            background-color: #fdbb2d;
+            color: #333;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .results-container {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1a2a6c;
+            margin: 20px 0;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .topic-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .topic-1 {
+            background-color: #e3f2fd;
+            color: #1a2a6c;
+        }
+        
+        .topic-2 {
+            background-color: #fff3e0;
+            color: #b21f1f;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            border-left: 4px solid #1a2a6c;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h1>Software & OS Functions Quiz</h1>
+            <div class="timer-container">
+                Time Remaining: <span class="timer">35:00</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <p>This quiz contains 35 questions on Computer Software Types and Operating System Functions. You have 35 minutes to complete it. Select the best answer for each question.</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <div class="question-counter">Question <span id="current-question">1</span> of 35</div>
+        </div>
+        
+        <div class="question-container">
+            <div class="topic-tag topic-1">Topic 1: Computer Software Types</div>
+            <div class="question-text">Which of the following is an example of system software?</div>
+            <div class="options-container">
+                <div class="option" data-index="0">a) MS Word</div>
+                <div class="option" data-index="1">b) Windows 10</div>
+                <div class="option" data-index="2">c) Excel</div>
+                <div class="option" data-index="3">d) Photoshop</div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="btn-prev" disabled>Previous</button>
+            <button class="btn-next">Next</button>
+            <button class="btn-submit" style="display: none;">Submit Quiz</button>
+        </div>
+        
+        <div class="results-container">
+            <h2>Quiz Completed!</h2>
+            <div class="score">0/35</div>
+            <div class="score-text">Your score: <span id="score-percentage">0%</span></div>
+            <button class="btn-restart">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Quiz questions data
+        const quizData = [
+            // Topic 1: Computer Software Types (Questions 1-18)
+            {
+                question: "Which of the following is an example of system software?",
+                options: ["a) MS Word", "b) Windows 10", "c) Excel", "d) Photoshop"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Application software is designed to __________.",
+                options: ["a) Control hardware operations", "b) Perform specific user tasks", "c) Manage memory", "d) Boot the computer"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Which of these is not an example of application software?",
+                options: ["a) Spreadsheet", "b) Compiler", "c) Database program", "d) Web browser"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "System software includes all except _______.",
+                options: ["a) Operating system", "b) Utility programs", "c) Word processors", "d) Device drivers"],
+                correct: 2,
+                topic: 1
+            },
+            {
+                question: "A compiler is classified as ________ software.",
+                options: ["a) Application", "b) System", "c) Utility", "d) Communication"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Which of these converts high-level language to machine code?",
+                options: ["a) Interpreter", "b) Assembler", "c) Compiler", "d) Debugger"],
+                correct: 2,
+                topic: 1
+            },
+            {
+                question: "Software that helps detect and remove viruses is called ________.",
+                options: ["a) Translator", "b) Antivirus", "c) Loader", "d) Monitor"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Utility programs are used to ________.",
+                options: ["a) Control input/output devices", "b) Maintain and optimize computer performance", "c) Edit text", "d) Store data"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Examples of system software include all EXCEPT:",
+                options: ["a) BIOS", "b) Operating system", "c) Antivirus", "d) Spreadsheet"],
+                correct: 3,
+                topic: 1
+            },
+            {
+                question: "Which of the following is NOT a utility software?",
+                options: ["a) Disk defragmenter", "b) Backup tool", "c) Compiler", "d) File compressor"],
+                correct: 2,
+                topic: 1
+            },
+            {
+                question: "Software that allows the user to create documents is called _______.",
+                options: ["a) Operating system", "b) Application software", "c) Firmware", "d) Utility"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Firmware is stored in ________.",
+                options: ["a) RAM", "b) ROM", "c) Hard disk", "d) Flash drive"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Which type of software runs hardware directly?",
+                options: ["a) System software", "b) Application software", "c) Utility software", "d) Firmware"],
+                correct: 0,
+                topic: 1
+            },
+            {
+                question: "Database management systems (DBMS) belong to ________.",
+                options: ["a) System software", "b) Application software", "c) Utility software", "d) Operating system"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "The software that translates assembly language is called _______.",
+                options: ["a) Compiler", "b) Assembler", "c) Interpreter", "d) Emulator"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "An example of open-source software is ________.",
+                options: ["a) Microsoft Word", "b) Ubuntu Linux", "c) Adobe Photoshop", "d) CorelDraw"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Software developed to meet the need of a particular organization is called _______.",
+                options: ["a) General-purpose software", "b) Custom software", "c) System software", "d) Freeware"],
+                correct: 1,
+                topic: 1
+            },
+            {
+                question: "Freeware means software that ________.",
+                options: ["a) Is free but with source code hidden", "b) Is paid", "c) Is free and open-source", "d) Cannot be shared"],
+                correct: 0,
+                topic: 1
+            },
+            // Topic 2: Operating System Functions (Questions 19-35)
+            {
+                question: "The main function of an operating system is to ________.",
+                options: ["a) Translate programs", "b) Manage hardware and software resources", "c) Edit text", "d) Create databases"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "Which of the following is not a function of an operating system?",
+                options: ["a) Memory management", "b) Process management", "c) Application development", "d) File management"],
+                correct: 2,
+                topic: 2
+            },
+            {
+                question: "The part of the OS that interacts directly with hardware is the ________.",
+                options: ["a) Shell", "b) Kernel", "c) User interface", "d) Command prompt"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "Which of these is a multitasking operating system?",
+                options: ["a) MS-DOS", "b) Windows 10", "c) CP/M", "d) BASIC"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "Which OS function allocates CPU time to programs?",
+                options: ["a) File management", "b) Process scheduling", "c) Device control", "d) Memory mapping"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "The interface that allows users to type commands is called ________.",
+                options: ["a) GUI", "b) CLI", "c) API", "d) TUI"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "Which function of an OS prevents unauthorized access?",
+                options: ["a) Memory management", "b) Security management", "c) Device driver", "d) Booting"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "Booting means ________.",
+                options: ["a) Starting the computer and loading the OS", "b) Installing programs", "c) Restarting applications", "d) Formatting the disk"],
+                correct: 0,
+                topic: 2
+            },
+            {
+                question: "The program that loads the operating system into memory is called ________.",
+                options: ["a) Loader", "b) Interpreter", "c) Compiler", "d) Driver"],
+                correct: 0,
+                topic: 2
+            },
+            {
+                question: "Virtual memory is used to ________.",
+                options: ["a) Increase hard disk capacity", "b) Extend available RAM using disk space", "c) Store viruses", "d) Manage cache"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "The process of switching between programs in memory is called ________.",
+                options: ["a) Swapping", "b) Paging", "c) Spooling", "d) Booting"],
+                correct: 0,
+                topic: 2
+            },
+            {
+                question: "Spooling is used in ________.",
+                options: ["a) Memory allocation", "b) Printer management", "c) CPU scheduling", "d) File compression"],
+                correct: 1,
+                topic: 2
+            },
+            {
+                question: "The OS function responsible for managing input and output devices is ________.",
+                options: ["a) Device management", "b) File management", "c) Security", "d) Task scheduling"],
+                correct: 0,
+                topic: 2
+            },
+            {
+                question: "Which of the following is an example of a mobile operating system?",
+                options: ["a) Android", "b) Windows 7", "c) MS-DOS", "d) Unix"],
+                correct: 0,
+                topic: 2
+            },
+            {
+                question: "A GUI-based operating system uses ________.",
+                options: ["a) Icons and menus", "b) Command lines", "c) Binary codes", "d) Keyboards only"],
+                correct: 0,
+                topic: 2
+            },
+            {
+                question: "The part of the OS that provides interaction between user and computer is ________.",
+                options: ["a) User interface", "b) Kernel", "c) Device driver", "d) Memory manager"],
+                correct: 0,
+                topic: 2
+            },
+            {
+                question: "Multithreading allows an OS to ________.",
+                options: ["a) Run multiple processes at once", "b) Store files", "c) Print documents only", "d) Boot faster"],
+                correct: 0,
+                topic: 2
+            }
+        ];
+
+        // Application state
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let timeLeft = 35 * 60; // 35 minutes in seconds
+        let timerInterval;
+        let quizCompleted = false;
+
+        // DOM Elements
+        const questionContainer = document.querySelector('.question-container');
+        const optionsContainer = document.querySelector('.options-container');
+        const questionText = document.querySelector('.question-text');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const progressBar = document.querySelector('.progress');
+        const timerDisplay = document.querySelector('.timer');
+        const prevButton = document.querySelector('.btn-prev');
+        const nextButton = document.querySelector('.btn-next');
+        const submitButton = document.querySelector('.btn-submit');
+        const resultsContainer = document.querySelector('.results-container');
+        const scoreDisplay = document.querySelector('.score');
+        const scorePercentage = document.getElementById('score-percentage');
+        const restartButton = document.querySelector('.btn-restart');
+
+        // Initialize the quiz
+        function initQuiz() {
+            displayQuestion(0);
+            startTimer();
+            updateProgressBar();
+        }
+
+        // Display a question
+        function displayQuestion(index) {
+            const question = quizData[index];
+            
+            // Update topic tag
+            const topicTag = document.querySelector('.topic-tag');
+            topicTag.textContent = `Topic ${question.topic}: ${question.topic === 1 ? 'Computer Software Types' : 'Operating System Functions'}`;
+            topicTag.className = `topic-tag topic-${question.topic}`;
+            
+            // Update question text
+            questionText.textContent = question.question;
+            
+            // Update options
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, i) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[index] === i) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', i);
+                optionElement.addEventListener('click', () => selectOption(i));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update question counter
+            currentQuestionSpan.textContent = index + 1;
+            
+            // Update navigation buttons
+            prevButton.disabled = index === 0;
+            
+            if (index === quizData.length - 1) {
+                nextButton.style.display = 'none';
+                submitButton.style.display = 'block';
+            } else {
+                nextButton.style.display = 'block';
+                submitButton.style.display = 'none';
+            }
+        }
+
+        // Select an option
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Update UI
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, i) => {
+                option.classList.remove('selected');
+                if (i === optionIndex) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            updateProgressBar();
+        }
+
+        // Navigate to next question
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Navigate to previous question
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            const progress = (answeredCount / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Start the timer
+        function startTimer() {
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running out
+            if (timeLeft <= 300) { // 5 minutes
+                document.querySelector('.timer-container').style.background = '#b21f1f';
+            }
+        }
+
+        // Submit the quiz
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            quizCompleted = true;
+            
+            // Calculate score
+            let score = 0;
+            quizData.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    score++;
+                }
+            });
+            
+            // Display results
+            document.querySelector('.question-container').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            document.querySelector('.instructions').style.display = 'none';
+            
+            scoreDisplay.textContent = `${score}/${quizData.length}`;
+            const percentage = ((score / quizData.length) * 100).toFixed(1);
+            scorePercentage.textContent = `${percentage}%`;
+            
+            resultsContainer.style.display = 'block';
+        }
+
+        // Restart the quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            timeLeft = 35 * 60;
+            quizCompleted = false;
+            
+            // Reset UI
+            document.querySelector('.question-container').style.display = 'block';
+            document.querySelector('.navigation').style.display = 'flex';
+            document.querySelector('.progress-container').style.display = 'block';
+            document.querySelector('.instructions').style.display = 'block';
+            resultsContainer.style.display = 'none';
+            document.querySelector('.timer-container').style.background = '#1a2a6c';
+            
+            initQuiz();
+        }
+
+        // Event listeners
+        nextButton.addEventListener('click', nextQuestion);
+        prevButton.addEventListener('click', prevQuestion);
+        submitButton.addEventListener('click', submitQuiz);
+        restartButton.addEventListener('click', restartQuiz);
+
+        // Initialize the quiz
+        initQuiz();
+    </script>
+</body>
+</html>
