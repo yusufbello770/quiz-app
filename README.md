@@ -1,1 +1,0 @@
-islamic Quiz App
