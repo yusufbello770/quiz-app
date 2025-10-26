@@ -1,84 +1,1394 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awesome Quiz App | Dev Bello</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- FontAweome CDN Link for Icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>CBT Exam App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .app-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #3498db;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .question-container {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .options-container {
+            margin-left: 15px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .option input {
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .timer-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-container {
+            margin: 20px 0;
+            background: #ecf0f1;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #2ecc71;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .result-container {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #2ecc71;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .question-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .question-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .question-status {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .status-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .answered {
+            background: #2ecc71;
+        }
+
+        .current {
+            background: #3498db;
+        }
+
+        .unanswered {
+            background: #e74c3c;
+        }
+
+        .exam-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .review-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        .correct-answer {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .user-answer {
+            margin-top: 5px;
+        }
+
+        .correct {
+            background: #d5f4e6;
+        }
+
+        .incorrect {
+            background: #f8d7da;
+        }
+
+        .teacher-panel {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .teacher-panel h3 {
+            margin-bottom: 15px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .data-table tr:hover {
+            background-color: #e9f7fe;
+        }
+
+        .export-options {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
 </head>
-
 <body>
-    <!-- start Quiz button -->
-    <div class="start_btn"><button>Start Quiz</button></div>
-
-    <!-- Info Box -->
-    <div class="info_box">
-        <div class="info-title"><span>Some Rules of this Quiz</span></div>
-        <div class="info-list">
-            <div class="info">1. You will have only <span>35 seconds</span> per each question.</div>
-            <div class="info">2. Once you select your answer, it can't be undone.</div>
-            <div class="info">3. You can't select any option once time goes off.</div>
-            <div class="info">4. You can't exit from the Quiz while you're playing.</div>
-            <div class="info">5. You'll get points on the basis of your correct answers.</div>
-        </div>
-        <div class="buttons">
-            <button class="quit">Exit Quiz</button>
-            <button class="restart">Continue</button>
-        </div>
-    </div>
-
-    <!-- Quiz Box -->
-    <div class="quiz_box">
+    <div class="container">
         <header>
-            <div class="title">Awesome Quiz Application</div>
-            <div class="timer">
-                <div class="time_left_txt">Time Left</div>
-                <div class="timer_sec">35</div>
-            </div>
-            <div class="time_line"></div>
+            <h1 class="app-title">CBT Exam Application</h1>
+            <p class="app-subtitle">Computer-Based Testing Platform</p>
         </header>
-        <section>
-            <div class="que_text">
-                <!-- Here I've inserted question from JavaScript -->
-            </div>
-            <div class="option_list">
-                <!-- Here I've inserted options from JavaScript -->
-            </div>
-        </section>
 
-        <!-- footer of Quiz Box -->
-        <footer>
-            <div class="total_que">
-                <!-- Here I've inserted Question Count Number from JavaScript -->
+        <!-- Teacher Panel -->
+        <div class="teacher-panel">
+            <h3>Teacher Access</h3>
+            <button id="view-results-btn" class="btn btn-warning">View Student Results</button>
+            <button id="back-to-exam-btn" class="btn btn-primary hidden">Back to Exam</button>
+        </div>
+
+        <!-- Registration Screen -->
+        <div id="registration-screen" class="card">
+            <h2 class="card-title">Student Registration</h2>
+            <div class="form-group">
+                <label for="student-name">Full Name</label>
+                <input type="text" id="student-name" placeholder="Enter your full name">
             </div>
-            <button class="next_btn">Next Que</button>
-        </footer>
+            <div class="form-group">
+                <label for="student-id">Student ID</label>
+                <input type="text" id="student-id" placeholder="Enter your student ID">
+            </div>
+            <div class="form-group">
+                <label for="student-class">Class/Group</label>
+                <input type="text" id="student-class" placeholder="Enter your class or group">
+            </div>
+            <div class="form-group">
+                <label for="exam-category">Exam Category</label>
+                <select id="exam-category">
+                    <option value="mixed">Mixed Questions (E-commerce, Cybersecurity, Database)</option>
+                    <option value="ecommerce">E-commerce Only</option>
+                    <option value="cybersecurity">Cybersecurity Only</option>
+                    <option value="database">Database Only</option>
+                </select>
+            </div>
+            <button id="start-exam-btn" class="btn btn-primary btn-block">Start Exam</button>
+        </div>
+
+        <!-- Instructions Screen -->
+        <div id="instructions-screen" class="card hidden">
+            <h2 class="card-title">Exam Instructions</h2>
+            <div class="form-group">
+                <p><strong>Exam Details:</strong></p>
+                <ul>
+                    <li>You will answer 10 randomly selected questions</li>
+                    <li>Time limit: 5 minutes</li>
+                    <li>Each question has 4 options with only one correct answer</li>
+                    <li>You can navigate between questions using the Next/Previous buttons</li>
+                    <li>Timer will be displayed at the top right corner</li>
+                    <li>Once time is up, the exam will be automatically submitted</li>
+                </ul>
+            </div>
+            <button id="begin-exam-btn" class="btn btn-success btn-block">Begin Exam</button>
+        </div>
+
+        <!-- Exam Screen -->
+        <div id="exam-screen" class="hidden">
+            <div class="exam-info">
+                <div>Student: <span id="student-display-name">-</span></div>
+                <div>Question: <span id="current-question">1</span> of 10</div>
+            </div>
+            
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            
+            <div id="question-display"></div>
+            
+            <div class="question-navigation">
+                <button id="prev-btn" class="btn">Previous</button>
+                <button id="next-btn" class="btn btn-primary">Next</button>
+                <button id="submit-exam-btn" class="btn btn-danger">Submit Exam</button>
+            </div>
+            
+            <div class="question-status">
+                <div class="status-item">
+                    <div class="status-color answered"></div>
+                    <span>Answered</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-color current"></div>
+                    <span>Current</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-color unanswered"></div>
+                    <span>Unanswered</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timer Display -->
+        <div id="timer-container" class="timer-container hidden">
+            <span id="timer-display">05:00</span>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="card hidden">
+            <div class="result-container">
+                <h2 class="card-title">Exam Results</h2>
+                <div class="score-circle">
+                    <span id="score-display">0</span>
+                </div>
+                <p>You scored <span id="score-text">0</span> out of 10</p>
+                <p id="result-message"></p>
+                
+                <div class="form-group">
+                    <button id="review-answers-btn" class="btn btn-primary">Review Answers</button>
+                    <button id="retake-exam-btn" class="btn">Retake Exam</button>
+                    <button id="download-certificate-btn" class="btn btn-success">Download Certificate</button>
+                </div>
+                
+                <div id="answers-review" class="hidden">
+                    <h3>Answer Review</h3>
+                    <div id="review-questions"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Results Screen -->
+        <div id="teacher-results-screen" class="card hidden">
+            <h2 class="card-title">Student Results</h2>
+            
+            <div class="export-options">
+                <button id="export-csv-btn" class="btn btn-success">Export as CSV</button>
+                <button id="export-json-btn" class="btn btn-primary">Export as JSON</button>
+                <button id="clear-data-btn" class="btn btn-danger">Clear All Data</button>
+            </div>
+            
+            <div id="results-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Student ID</th>
+                            <th>Class</th>
+                            <th>Exam Category</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                            <th>Date/Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-table-body">
+                        <!-- Results will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="no-results-message" class="hidden">
+                <p>No student results found.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Result Box -->
-    <div class="result_box">
-        <div class="icon">
-            <i class="fas fa-crown"></i>
-        </div>
-        <div class="complete_text">You've completed the Quiz!</div>
-        <div class="score_text">
-            <!-- Here I've inserted Score Result from JavaScript -->
-        </div>
-        <div class="buttons">
-            <button class="restart">Replay Quiz</button>
-            <button class="quit">Quit Quiz</button>
-        </div>
-    </div>
+    <script>
+        // All 35 questions
+        const allQuestions = [
+            // E-commerce questions (1-12)
+            {
+                id: 1,
+                category: "ecommerce",
+                question: "What does E-commerce stand for?",
+                options: [
+                    "Electronic Communication",
+                    "Electronic Commerce",
+                    "Electronic Community",
+                    "Electronic Company"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 2,
+                category: "ecommerce",
+                question: "Which of the following is an example of B2C e-commerce?",
+                options: [
+                    "Alibaba selling to retailers",
+                    "Amazon selling to customers",
+                    "Intel selling to Dell",
+                    "Government procurement portal"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 3,
+                category: "ecommerce",
+                question: "In e-commerce, a shopping cart is used for:",
+                options: [
+                    "Downloading software",
+                    "Saving selected items before checkout",
+                    "Encrypting payment data",
+                    "Registering a new user"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 4,
+                category: "ecommerce",
+                question: "The process of verifying a customer's identity online is called:",
+                options: [
+                    "Authentication",
+                    "Authorization",
+                    "Encryption",
+                    "Validation"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 5,
+                category: "ecommerce",
+                question: "Which of the following is an electronic payment method?",
+                options: [
+                    "Cheque",
+                    "Credit Card",
+                    "Cash on Delivery",
+                    "Invoice"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 6,
+                category: "ecommerce",
+                question: "The protocol that secures communication between a web browser and server is:",
+                options: [
+                    "HTTP",
+                    "FTP",
+                    "HTTPS",
+                    "SMTP"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 7,
+                category: "ecommerce",
+                question: "Which of the following is not a benefit of e-commerce?",
+                options: [
+                    "24/7 availability",
+                    "Global reach",
+                    "Physical interaction",
+                    "Lower transaction cost"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 8,
+                category: "ecommerce",
+                question: "What is the main function of a payment gateway?",
+                options: [
+                    "Host website content",
+                    "Process online payments securely",
+                    "Provide customer support",
+                    "Manage inventory"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 9,
+                category: "ecommerce",
+                question: "The act of promoting products online via email or social media is known as:",
+                options: [
+                    "Digital Marketing",
+                    "Database Management",
+                    "Data Mining",
+                    "Data Encryption"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 10,
+                category: "ecommerce",
+                question: "Which technology is commonly used for tracking online customers' behavior?",
+                options: [
+                    "Cookies",
+                    "Routers",
+                    "Firewalls",
+                    "Gateways"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 11,
+                category: "ecommerce",
+                question: "SSL stands for:",
+                options: [
+                    "Secure Sockets Layer",
+                    "Safe Security Link",
+                    "System Security Lock",
+                    "Secure Shopping Link"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 12,
+                category: "ecommerce",
+                question: "The electronic exchange of business documents between organizations is:",
+                options: [
+                    "EDI (Electronic Data Interchange)",
+                    "ERP (Enterprise Resource Planning)",
+                    "EDP (Electronic Data Processing)",
+                    "ECM (Enterprise Content Management)"
+                ],
+                correctAnswer: 0
+            },
+            // Cybersecurity questions (13-24)
+            {
+                id: 13,
+                category: "cybersecurity",
+                question: "The main goal of cybersecurity is to protect:",
+                options: [
+                    "Hardware only",
+                    "Software only",
+                    "Information systems and data",
+                    "Internet speed"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 14,
+                category: "cybersecurity",
+                question: "Which of the following is a strong password?",
+                options: [
+                    "password123",
+                    "12345678",
+                    "Y@usf_B3ll0!",
+                    "mynameisYusuf"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 15,
+                category: "cybersecurity",
+                question: "A program that replicates itself and spreads to other computers is called a:",
+                options: [
+                    "Trojan",
+                    "Virus",
+                    "Rootkit",
+                    "Spyware"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 16,
+                category: "cybersecurity",
+                question: "The act of sending fake emails to trick users into revealing personal information is:",
+                options: [
+                    "Spoofing",
+                    "Phishing",
+                    "Scanning",
+                    "Spamming"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 17,
+                category: "cybersecurity",
+                question: "A firewall is used to:",
+                options: [
+                    "Block viruses",
+                    "Control network traffic and access",
+                    "Repair corrupted files",
+                    "Detect intrusions automatically"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 18,
+                category: "cybersecurity",
+                question: "The practice of ethical hacking is also known as:",
+                options: [
+                    "Black-hat hacking",
+                    "Penetration testing",
+                    "Malware analysis",
+                    "Social engineering"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 19,
+                category: "cybersecurity",
+                question: "Two-factor authentication (2FA) means:",
+                options: [
+                    "Two users share one account",
+                    "Two passwords are used",
+                    "Two verification methods are required",
+                    "Two devices must connect"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 20,
+                category: "cybersecurity",
+                question: "The software used to detect and remove malicious programs is:",
+                options: [
+                    "Antivirus",
+                    "Keylogger",
+                    "Firewall",
+                    "Rootkit"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 21,
+                category: "cybersecurity",
+                question: "Which of the following is a form of cyber attack that floods a system with traffic?",
+                options: [
+                    "DoS/DDoS attack",
+                    "Phishing",
+                    "Spoofing",
+                    "Eavesdropping"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 22,
+                category: "cybersecurity",
+                question: "The process of converting data into unreadable code for security is:",
+                options: [
+                    "Hashing",
+                    "Encryption",
+                    "Compression",
+                    "Encoding"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 23,
+                category: "cybersecurity",
+                question: "A VPN (Virtual Private Network) is primarily used to:",
+                options: [
+                    "Increase network speed",
+                    "Provide secure remote access",
+                    "Monitor employee activities",
+                    "Host a website"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 24,
+                category: "cybersecurity",
+                question: "Which of the following is an example of social engineering?",
+                options: [
+                    "Using SQL injection",
+                    "Tricking someone to reveal their password",
+                    "Installing malware remotely",
+                    "Cracking Wi-Fi encryption"
+                ],
+                correctAnswer: 1
+            },
+            // Database questions (25-35)
+            {
+                id: 25,
+                category: "database",
+                question: "A database is a:",
+                options: [
+                    "Collection of programs",
+                    "Collection of interrelated data",
+                    "Type of hardware",
+                    "File manager"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 26,
+                category: "database",
+                question: "The person responsible for managing and maintaining a database is called:",
+                options: [
+                    "Database Developer",
+                    "Database Administrator (DBA)",
+                    "System Analyst",
+                    "Data Analyst"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 27,
+                category: "database",
+                question: "Which of the following is a DBMS (Database Management System)?",
+                options: [
+                    "MS Word",
+                    "MySQL",
+                    "Photoshop",
+                    "Excel"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 28,
+                category: "database",
+                question: "The SQL command used to retrieve data from a database is:",
+                options: [
+                    "SELECT",
+                    "UPDATE",
+                    "INSERT",
+                    "DELETE"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 29,
+                category: "database",
+                question: "Which key uniquely identifies each record in a table?",
+                options: [
+                    "Foreign Key",
+                    "Primary Key",
+                    "Candidate Key",
+                    "Alternate Key"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 30,
+                category: "database",
+                question: "The term tuple in a relational database refers to a:",
+                options: [
+                    "Column",
+                    "Row",
+                    "Table",
+                    "Field"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 31,
+                category: "database",
+                question: "The process of organizing data to reduce redundancy is called:",
+                options: [
+                    "Normalization",
+                    "Encryption",
+                    "Indexing",
+                    "Data Mining"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 32,
+                category: "database",
+                question: "The SQL statement to add a new record is:",
+                options: [
+                    "INSERT INTO",
+                    "ADD RECORD",
+                    "NEW ENTRY",
+                    "APPEND"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 33,
+                category: "database",
+                question: "Which of the following is not a type of database model?",
+                options: [
+                    "Hierarchical",
+                    "Network",
+                    "Relational",
+                    "Functional"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 34,
+                category: "database",
+                question: "SQL stands for:",
+                options: [
+                    "Structured Query Language",
+                    "Sequential Query Language",
+                    "Standard Question Language",
+                    "System Query Logic"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 35,
+                category: "database",
+                question: "To remove all records from a table but keep the structure, use:",
+                options: [
+                    "DROP",
+                    "ERASE",
+                    "TRUNCATE",
+                    "DELETE"
+                ],
+                correctAnswer: 2
+            }
+        ];
 
-    <!-- Inside this JavaScript file I've inserted Questions and Options only -->
-    <script src="question.js"></script>
+        // Application state
+        let currentExam = {
+            studentName: "",
+            studentId: "",
+            studentClass: "",
+            category: "mixed",
+            questions: [],
+            answers: [],
+            currentQuestionIndex: 0,
+            timeRemaining: 300, // 5 minutes in seconds
+            timerInterval: null
+        };
 
-    <!-- Inside this JavaScript file I've coded all Quiz Codes -->
-    <script src="script.js"></script>
+        // DOM Elements
+        const registrationScreen = document.getElementById('registration-screen');
+        const instructionsScreen = document.getElementById('instructions-screen');
+        const examScreen = document.getElementById('exam-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const teacherResultsScreen = document.getElementById('teacher-results-screen');
+        const timerContainer = document.getElementById('timer-container');
+        const timerDisplay = document.getElementById('timer-display');
+        const studentDisplayName = document.getElementById('student-display-name');
+        const currentQuestionDisplay = document.getElementById('current-question');
+        const questionDisplay = document.getElementById('question-display');
+        const progressBar = document.getElementById('progress-bar');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreText = document.getElementById('score-text');
+        const resultMessage = document.getElementById('result-message');
+        const reviewQuestions = document.getElementById('review-questions');
+        const answersReview = document.getElementById('answers-review');
+        const resultsTableBody = document.getElementById('results-table-body');
+        const noResultsMessage = document.getElementById('no-results-message');
+        const viewResultsBtn = document.getElementById('view-results-btn');
+        const backToExamBtn = document.getElementById('back-to-exam-btn');
 
+        // Event Listeners
+        document.getElementById('start-exam-btn').addEventListener('click', startRegistration);
+        document.getElementById('begin-exam-btn').addEventListener('click', beginExam);
+        document.getElementById('prev-btn').addEventListener('click', showPreviousQuestion);
+        document.getElementById('next-btn').addEventListener('click', showNextQuestion);
+        document.getElementById('submit-exam-btn').addEventListener('click', submitExam);
+        document.getElementById('review-answers-btn').addEventListener('click', toggleReviewAnswers);
+        document.getElementById('retake-exam-btn').addEventListener('click', retakeExam);
+        document.getElementById('download-certificate-btn').addEventListener('click', downloadCertificate);
+        viewResultsBtn.addEventListener('click', showTeacherResults);
+        backToExamBtn.addEventListener('click', backToExam);
+        document.getElementById('export-csv-btn').addEventListener('click', exportToCSV);
+        document.getElementById('export-json-btn').addEventListener('click', exportToJSON);
+        document.getElementById('clear-data-btn').addEventListener('click', clearAllData);
+
+        // Functions
+        function startRegistration() {
+            const name = document.getElementById('student-name').value.trim();
+            const id = document.getElementById('student-id').value.trim();
+            const studentClass = document.getElementById('student-class').value.trim();
+            const category = document.getElementById('exam-category').value;
+
+            if (!name || !id || !studentClass) {
+                alert('Please enter your name, student ID, and class');
+                return;
+            }
+
+            currentExam.studentName = name;
+            currentExam.studentId = id;
+            currentExam.studentClass = studentClass;
+            currentExam.category = category;
+
+            registrationScreen.classList.add('hidden');
+            instructionsScreen.classList.remove('hidden');
+        }
+
+        function beginExam() {
+            // Select 10 random questions based on category
+            let filteredQuestions = allQuestions;
+            
+            if (currentExam.category !== 'mixed') {
+                filteredQuestions = allQuestions.filter(q => q.category === currentExam.category);
+            }
+            
+            // Shuffle and select 10 questions
+            const shuffled = [...filteredQuestions].sort(() => 0.5 - Math.random());
+            currentExam.questions = shuffled.slice(0, 10);
+            
+            // Initialize answers array
+            currentExam.answers = new Array(10).fill(null);
+            
+            instructionsScreen.classList.add('hidden');
+            examScreen.classList.remove('hidden');
+            timerContainer.classList.remove('hidden');
+            
+            studentDisplayName.textContent = currentExam.studentName;
+            
+            startTimer();
+            displayQuestion(0);
+            updateProgressBar();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            
+            currentExam.timerInterval = setInterval(() => {
+                currentExam.timeRemaining--;
+                updateTimerDisplay();
+                
+                if (currentExam.timeRemaining <= 0) {
+                    clearInterval(currentExam.timerInterval);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(currentExam.timeRemaining / 60);
+            const seconds = currentExam.timeRemaining % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running out
+            if (currentExam.timeRemaining <= 60) {
+                timerContainer.style.background = '#e74c3c';
+            }
+        }
+
+        function displayQuestion(index) {
+            currentExam.currentQuestionIndex = index;
+            const question = currentExam.questions[index];
+            
+            currentQuestionDisplay.textContent = index + 1;
+            
+            let html = `
+                <div class="question-container">
+                    <div class="question-text">${index + 1}. ${question.question}</div>
+                    <div class="options-container">
+            `;
+            
+            question.options.forEach((option, i) => {
+                const isChecked = currentExam.answers[index] === i ? 'checked' : '';
+                html += `
+                    <div class="option">
+                        <input type="radio" id="q${index}o${i}" name="question${index}" value="${i}" ${isChecked}>
+                        <label for="q${index}o${i}">${option}</label>
+                    </div>
+                `;
+            });
+            
+            html += `</div></div>`;
+            questionDisplay.innerHTML = html;
+            
+            // Add event listeners to radio buttons
+            question.options.forEach((option, i) => {
+                document.getElementById(`q${index}o${i}`).addEventListener('change', (e) => {
+                    currentExam.answers[index] = parseInt(e.target.value);
+                    updateProgressBar();
+                });
+            });
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').textContent = index === 9 ? 'Finish' : 'Next';
+        }
+
+        function showPreviousQuestion() {
+            if (currentExam.currentQuestionIndex > 0) {
+                displayQuestion(currentExam.currentQuestionIndex - 1);
+            }
+        }
+
+        function showNextQuestion() {
+            if (currentExam.currentQuestionIndex < 9) {
+                displayQuestion(currentExam.currentQuestionIndex + 1);
+            } else {
+                submitExam();
+            }
+        }
+
+        function updateProgressBar() {
+            const answeredCount = currentExam.answers.filter(a => a !== null).length;
+            const progress = (answeredCount / 10) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function submitExam() {
+            clearInterval(currentExam.timerInterval);
+            
+            // Calculate score
+            let score = 0;
+            currentExam.questions.forEach((question, index) => {
+                if (currentExam.answers[index] === question.correctAnswer) {
+                    score++;
+                }
+            });
+            
+            // Save results to localStorage
+            saveStudentResult(score);
+            
+            // Show results
+            examScreen.classList.add('hidden');
+            timerContainer.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            
+            scoreDisplay.textContent = score;
+            scoreText.textContent = `${score} out of 10`;
+            
+            // Set result message
+            if (score >= 8) {
+                resultMessage.textContent = "Excellent! You have a strong understanding of the material.";
+                resultMessage.style.color = "#2ecc71";
+            } else if (score >= 6) {
+                resultMessage.textContent = "Good job! You have a decent understanding of the material.";
+                resultMessage.style.color = "#3498db";
+            } else {
+                resultMessage.textContent = "You may need to review the material and try again.";
+                resultMessage.style.color = "#e74c3c";
+            }
+        }
+
+        function saveStudentResult(score) {
+            // Get existing results or initialize empty array
+            const existingResults = JSON.parse(localStorage.getItem('cbt_results')) || [];
+            
+            // Create result object
+            const result = {
+                studentName: currentExam.studentName,
+                studentId: currentExam.studentId,
+                studentClass: currentExam.studentClass,
+                examCategory: currentExam.category,
+                score: score,
+                percentage: (score / 10) * 100,
+                timestamp: new Date().toLocaleString(),
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            // Add to results
+            existingResults.push(result);
+            
+            // Save back to localStorage
+            localStorage.setItem('cbt_results', JSON.stringify(existingResults));
+        }
+
+        function toggleReviewAnswers() {
+            if (answersReview.classList.contains('hidden')) {
+                // Show review
+                let html = '';
+                currentExam.questions.forEach((question, index) => {
+                    const userAnswer = currentExam.answers[index];
+                    const isCorrect = userAnswer === question.correctAnswer;
+                    
+                    html += `
+                        <div class="review-item ${isCorrect ? 'correct' : 'incorrect'}">
+                            <div class="question-text">${index + 1}. ${question.question}</div>
+                            <div class="correct-answer">Correct answer: ${question.options[question.correctAnswer]}</div>
+                            <div class="user-answer">Your answer: ${userAnswer !== null ? question.options[userAnswer] : 'Not answered'}</div>
+                        </div>
+                    `;
+                });
+                
+                reviewQuestions.innerHTML = html;
+                answersReview.classList.remove('hidden');
+                document.getElementById('review-answers-btn').textContent = 'Hide Answers';
+            } else {
+                // Hide review
+                answersReview.classList.add('hidden');
+                document.getElementById('review-answers-btn').textContent = 'Review Answers';
+            }
+        }
+
+        function retakeExam() {
+            // Reset exam state
+            currentExam.questions = [];
+            currentExam.answers = [];
+            currentExam.currentQuestionIndex = 0;
+            currentExam.timeRemaining = 300;
+            
+            // Reset UI
+            resultsScreen.classList.add('hidden');
+            answersReview.classList.add('hidden');
+            registrationScreen.classList.remove('hidden');
+            
+            // Clear form
+            document.getElementById('student-name').value = '';
+            document.getElementById('student-id').value = '';
+            document.getElementById('student-class').value = '';
+        }
+
+        function downloadCertificate() {
+            // Create a simple certificate
+            const score = parseInt(scoreDisplay.textContent);
+            const percentage = (score / 10) * 100;
+            
+            const certificate = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Certificate of Completion</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+                        .certificate { border: 10px solid #2c3e50; padding: 50px; max-width: 800px; margin: 0 auto; }
+                        h1 { color: #2c3e50; }
+                        .student-name { font-size: 28px; font-weight: bold; margin: 20px 0; }
+                        .score { font-size: 24px; margin: 20px 0; }
+                        .date { margin-top: 30px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="certificate">
+                        <h1>Certificate of Completion</h1>
+                        <p>This is to certify that</p>
+                        <div class="student-name">${currentExam.studentName}</div>
+                        <p>has successfully completed the CBT Exam with a score of</p>
+                        <div class="score">${score}/10 (${percentage}%)</div>
+                        <p>in the category: ${currentExam.category}</p>
+                        <div class="date">${new Date().toLocaleDateString()}</div>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            // Create a blob and download link
+            const blob = new Blob([certificate], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `certificate_${currentExam.studentName}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function showTeacherResults() {
+            // Hide all other screens
+            registrationScreen.classList.add('hidden');
+            instructionsScreen.classList.add('hidden');
+            examScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            timerContainer.classList.add('hidden');
+            
+            // Show teacher results screen
+            teacherResultsScreen.classList.remove('hidden');
+            backToExamBtn.classList.remove('hidden');
+            viewResultsBtn.classList.add('hidden');
+            
+            // Load and display results
+            loadStudentResults();
+        }
+
+        function backToExam() {
+            // Hide teacher results
+            teacherResultsScreen.classList.add('hidden');
+            backToExamBtn.classList.add('hidden');
+            
+            // Show registration screen
+            registrationScreen.classList.remove('hidden');
+            viewResultsBtn.classList.remove('hidden');
+        }
+
+        function loadStudentResults() {
+            const results = JSON.parse(localStorage.getItem('cbt_results')) || [];
+            
+            if (results.length === 0) {
+                noResultsMessage.classList.remove('hidden');
+                resultsTableBody.innerHTML = '';
+                return;
+            }
+            
+            noResultsMessage.classList.add('hidden');
+            
+            // Sort by date (newest first)
+            results.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Populate table
+            let html = '';
+            results.forEach(result => {
+                html += `
+                    <tr>
+                        <td>${result.studentName}</td>
+                        <td>${result.studentId}</td>
+                        <td>${result.studentClass}</td>
+                        <td>${result.examCategory}</td>
+                        <td>${result.score}/10</td>
+                        <td>${result.percentage}%</td>
+                        <td>${result.timestamp}</td>
+                    </tr>
+                `;
+            });
+            
+            resultsTableBody.innerHTML = html;
+        }
+
+        function exportToCSV() {
+            const results = JSON.parse(localStorage.getItem('cbt_results')) || [];
+            
+            if (results.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            // Create CSV header
+            let csv = 'Student Name,Student ID,Class,Exam Category,Score,Percentage,Date/Time\n';
+            
+            // Add data rows
+            results.forEach(result => {
+                csv += `"${result.studentName}","${result.studentId}","${result.studentClass}","${result.examCategory}",${result.score},${result.percentage}%,"${result.timestamp}"\n`;
+            });
+            
+            // Create download link
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cbt_results_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportToJSON() {
+            const results = JSON.parse(localStorage.getItem('cbt_results')) || [];
+            
+            if (results.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            // Create JSON string
+            const json = JSON.stringify(results, null, 2);
+            
+            // Create download link
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cbt_results_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all student results? This action cannot be undone.')) {
+                localStorage.removeItem('cbt_results');
+                loadStudentResults();
+            }
+        }
+
+        // Initialize the app
+        loadStudentResults();
+    </script>
 </body>
-
 </html>
